@@ -1,0 +1,196 @@
+Specs
+
+Players
+	Must have a name, a location, and an inventory
+	Must be able to move through rooms via commands
+Items
+	Can be located in a room or carried by a player
+
+Mobs
+	Can move between rooms independently of players
+
+Commands
+	Movement commands (North, East, South, West, etc) to move between rooms
+	"Get" command to pick up items
+	"Drop" command to drop items
+	"Look" command to display information about the current room
+	"Inventory" command to display items in your inventory
+
+
+Classes
+
+Class Room
+
+Attributes
+String description - description of the room
+ArrayList<Integer> items - contains the IDs for each item in the room
+ArrayList<Integer> chars - contains the IDs for each character in the room
+ArrayList<Exit> exits - contains the exits to the room
+int ID - ID of the room
+
+Methods
+public String getDesc() - returns description
+public int getID() - returns the room's ID
+public ArrayList<Integer> getItems() - returns an ArrayList containing the ID of each item in the room
+public ArrayList<Integer> getChars() - returns an ArrayList containing the ID of each character in the room
+public ArrayList<Exit> getExits() - returns an ArrayList containing the exits to the room
+public void addExit(int roomID, String dir) - adds an exit to the room
+public void addItem(int itemID) - adds the item with ID itemID to the room
+public void addChar(int charID) - adds the character with ID charID to the room
+public int getConnectedRoomID(String dir) - if the room contains an exit to direction dir, returns the ID of the room that exit connects to
+public boolean containsItem(int itemID) - returns true if the item with ID itemID is contained within this room
+public boolean containsChar(int charID) - returns true if the character with ID charID is contained within this room
+public void removeItem(int itemID) - if the room contains the item with ID itemID, removes that item from the room
+public void removeChar(int charID) - if the room contains the character with ID charID, removes that character from the room
+
+
+Class RoomList
+
+Attributes
+ArrayList<Room> rooms - list of all rooms that are a part of the game
+int nextID - increments each time an ID is assigned, used to ensure all IDs are unique
+
+Methods
+private int getRoomIndex(int roomID) - returns the index in rooms at which the room with ID roomID is located
+public int addRoom(String desc) - creates a new room with description desc and ID nextID, then increments nextID. Returns the ID of the new room
+public String getRoomDesc(int roomID) - returns the description of the room with ID roomID
+public ArrayList<Integer> getRoomItems(int roomID) - returns an ArrayList containing the ID of each item in the room with ID roomID
+public ArrayList<Integer> getRoomChars(int roomID) - returns an ArrayList containing the ID of each character in the room with ID roomID
+public ArrayList<Exit> getRoomExits(int roomID) - returns an ArrayList containing the exits to the room with ID roomID
+public int moveChar(int roomID, int charID, String dir) - If the character with ID charID is in the room with ID roomID and the room contains an exit in direction dir, 
+	moves the character to the room in that direction, then returns the ID of the new room in which the character resides.
+public boolean containsItem(int roomID, int itemID) - returns true if the item with ID itemID is contained within the room with ID roomID
+public boolean containsChar(int roomID, int charID) - returns true if the character with ID charID is contained within the room with ID roomID
+public void removeChar(int roomID, int charID) - If the character with ID charID is in the room with ID roomID, removes the character from the room.
+public void addChar(int roomID, int charID) - Adds the character with ID charID to the room with ID roomID
+public void removeItem(int roomID, int itemID) - If the item with ID itemID is in the room with ID roomID, removes the item from the room.
+public void addItem(int roomID, in itemID) - Adds the item with ID itemID to the room with ID roomID
+
+Class Item
+
+Attributes
+String name - name of the item
+int ID - ID of the item
+boolean isBeingCarried - true if the item is being carried by a character, false if the item is in a room
+int container - ID of the character carrying this item or the room containing it
+
+Methods
+public String getName() - returns the item's name
+public int getID() - returns the item's ID
+public int getContainer() - returns the ID of the character carrying this item or the room containing it
+public boolean isBeingCarried() - returns true if the item is being carried by a character, false if the item is in a room
+public void setContainer(boolean beingCarried, int containerID) - sets the holder of this item to the character (if beingCarried is true) 
+	or room (if beingCarried is false) with ID containerID
+
+
+Class ItemList
+
+Attributes
+ArrayList<Item> items - list of all items that are a part of the game
+int nextID - increments each time an ID is assigned, used to ensure all IDs are unique
+
+Methods
+private int getItemIndex(int itemID) - returns the index in items at which the item with ID itemID is located
+public ArrayList<Integer> findItemByName(String itemName) - returns an ArrayList containing the IDs of each item with name itemName
+public int addItem(String itemName) - creates a new Item with name itemName and ID nextID, then increments nextID. Returns the ID of the new item
+public String getItemName(int itemID) - returns the name of the item with ID itemID
+public int getItemContainer(int itemID) - returns the ID of the container of the item with ID itemID
+public boolean isItemBeingCarried(int itemID) - returns true if the item with ID itemID is being carried by a character, false if the item is in a room
+public void setItemContainer(int itemID, boolean beingCarried, int containerID) - sets the holder of the item with ID itemID to the character (if beingCarried is true) 
+	or room (if beingCarried is false) with ID containerID
+
+Class Character
+
+Attributes
+String name - name of the character
+int ID - ID of the character
+int room - ID of the room this character is in
+ArrayList<Integer> inventory - contains the IDs for each item this character is holding
+
+Methods
+public String getName() - returns the character's name
+public int getID() - returns the character's ID
+public int getRoom() - returns the ID of the room the character currently occupies
+public ArrayList<Integer> getInv() - returns an ArrayList containing the IDs of each item the character is holding
+public boolean holdingItem(int itemID) - returns true if the item with ID itemID is contained within the character's inventory
+public void addItem(int itemID) - adds the item with ID itemID to the character's inventory
+public void removeItem(int itemID) - if the item with ID itemID is in the character's inventory, removes it from the inventory
+public void setRoom(int roomID) - moves the character to the room with ID roomID
+
+Class CharList
+
+Attributes
+ArrayList<Character> chars - list of all characters that are a part of the game
+int nextID - increments each time an ID is assigned, used to ensure all IDs are unique
+
+Methods
+private int getCharIndex(int charID) - returns the index in chars at which the character with ID charID is located
+public int addChar(String n) - creates a character with name n and ID nextID, then increments nextID. Returns the ID of the new character
+public String getCharName(int charID) - returns the name of the character with ID charID
+public ArrayList<Integer> findCharByName(String charName) - returns an ArrayList containing the IDs of each character with name charName
+public int getCharLocation(int charID) - returns the ID of the room in which the character with ID charID is located
+public ArrayList<Integer> getCharInv(int charID) - returns an ArrayList containing the IDs of each item the character with ID charID is holding
+public boolean holdingItem(int charID, int itemID) - returns true if the item with ID itemID is contained within the character with ID charID's inventory
+public void addItem(int charID, int itemID) - adds the item with ID itemID to the character with ID charID's inventory
+public void removeItem(int charID, int itemID) - if the item with ID itemID is in the character with ID charID's inventory, removes it from their inventory
+public void moveChar(int charID, int roomID) - moves the character with ID charID to the room with ID roomID
+
+Class IOHandler
+
+Class GameMaster
+
+Attributes
+
+
+Class Command
+
+Attributes
+[public static final int GET
+public static final int DROP
+public static final int MOVE
+public static final String NORTH
+public static final String NORTHEAST
+public static final String EAST
+public static final String SOUTHEAST
+public static final String SOUTH
+public static final String SOUTHWEST
+public static final String WEST
+public static final String NORTHWEST] - various statics used for interpreting commands
+
+int action - the action to be carried out, either getting an item (GET), dropping an item (DROP), or moving in a direction (MOVE).
+int charID - the ID of the character this command was intended for.
+String param - the parameter for the action. Either a direction, if the action is to move, or the name of the item, if the action is picking up or dropping an item.
+
+Methods
+public int getAction() - returns action
+public int getCharID() - returns charID
+public String getParam() - returns param
+
+Interface Controller
+
+Methods
+public int getCharID() - returns the ID of the Character object this controller controls
+public Command takeAction() - decides what this controller's character should do, then returns a command object containing those instructions
+
+Class PlayerController implements Controller
+
+Class MobController implements Controller
+
+Class Exit
+
+Attributes
+[public static final String NORTH
+public static final String NORTHEAST
+public static final String EAST
+public static final String SOUTHEAST
+public static final String SOUTH
+public static final String SOUTHWEST
+public static final String WEST
+public static final String NORTHWEST] - various statics used for interpreting directions
+
+int exitsTo - ID of the room this exit leads to
+String direction - direction in which this exit is located
+
+Methods
+public int getNextRoom() - returns exitsTo
+public String getDir() - returns direction
