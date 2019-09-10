@@ -1,25 +1,6 @@
-Specs
-
-Players
-	Must have a name, a location, and an inventory
-	Must be able to move through rooms via commands
-Items
-	Can be located in a room or carried by a player
-
-Mobs
-	Can move between rooms independently of players
-
-Commands
-	Movement commands (North, East, South, West, etc) to move between rooms
-	"Get" command to pick up items
-	"Drop" command to drop items
-	"Look" command to display information about the current room
-	"Inventory" command to display items in your inventory
-
-
 Classes
 
-Class Room
+class Room
 
 Attributes
 String description - description of the room
@@ -44,7 +25,7 @@ public void removeItem(int itemID) - if the room contains the item with ID itemI
 public void removeChar(int charID) - if the room contains the character with ID charID, removes that character from the room
 
 
-Class RoomList
+class RoomList
 
 Attributes
 ArrayList<Room> rooms - list of all rooms that are a part of the game
@@ -57,8 +38,7 @@ public String getRoomDesc(int roomID) - returns the description of the room with
 public ArrayList<Integer> getRoomItems(int roomID) - returns an ArrayList containing the ID of each item in the room with ID roomID
 public ArrayList<Integer> getRoomChars(int roomID) - returns an ArrayList containing the ID of each character in the room with ID roomID
 public ArrayList<Exit> getRoomExits(int roomID) - returns an ArrayList containing the exits to the room with ID roomID
-public int moveChar(int roomID, int charID, String dir) - If the character with ID charID is in the room with ID roomID and the room contains an exit in direction dir, 
-	moves the character to the room in that direction, then returns the ID of the new room in which the character resides.
+public int moveChar(int roomID, int charID, String dir) - If the character with ID charID is in the room with ID roomID and the room contains an exit in direction dir, moves the character to the room in that direction, then returns the ID of the new room in which the character resides.
 public boolean containsItem(int roomID, int itemID) - returns true if the item with ID itemID is contained within the room with ID roomID
 public boolean containsChar(int roomID, int charID) - returns true if the character with ID charID is contained within the room with ID roomID
 public void removeChar(int roomID, int charID) - If the character with ID charID is in the room with ID roomID, removes the character from the room.
@@ -66,11 +46,12 @@ public void addChar(int roomID, int charID) - Adds the character with ID charID 
 public void removeItem(int roomID, int itemID) - If the item with ID itemID is in the room with ID roomID, removes the item from the room.
 public void addItem(int roomID, in itemID) - Adds the item with ID itemID to the room with ID roomID
 
-Class Item
+class Item
 
 Attributes
 String name - name of the item
 int ID - ID of the item
+boolean carriable - item cannot be picked up if false
 boolean isBeingCarried - true if the item is being carried by a character, false if the item is in a room
 int container - ID of the character carrying this item or the room containing it
 
@@ -79,11 +60,10 @@ public String getName() - returns the item's name
 public int getID() - returns the item's ID
 public int getContainer() - returns the ID of the character carrying this item or the room containing it
 public boolean isBeingCarried() - returns true if the item is being carried by a character, false if the item is in a room
-public void setContainer(boolean beingCarried, int containerID) - sets the holder of this item to the character (if beingCarried is true) 
-	or room (if beingCarried is false) with ID containerID
+public void setContainer(boolean beingCarried, int containerID) - sets the holder of this item to the character (if beingCarried is true) or room (if beingCarried is false) with ID containerID
 
 
-Class ItemList
+class ItemList
 
 Attributes
 ArrayList<Item> items - list of all items that are a part of the game
@@ -99,7 +79,7 @@ public boolean isItemBeingCarried(int itemID) - returns true if the item with ID
 public void setItemContainer(int itemID, boolean beingCarried, int containerID) - sets the holder of the item with ID itemID to the character (if beingCarried is true) 
 	or room (if beingCarried is false) with ID containerID
 
-Class Character
+class Character
 
 Attributes
 String name - name of the character
@@ -117,7 +97,7 @@ public void addItem(int itemID) - adds the item with ID itemID to the character'
 public void removeItem(int itemID) - if the item with ID itemID is in the character's inventory, removes it from the inventory
 public void setRoom(int roomID) - moves the character to the room with ID roomID
 
-Class CharList
+class CharList
 
 Attributes
 ArrayList<Character> chars - list of all characters that are a part of the game
@@ -135,14 +115,27 @@ public void addItem(int charID, int itemID) - adds the item with ID itemID to th
 public void removeItem(int charID, int itemID) - if the item with ID itemID is in the character with ID charID's inventory, removes it from their inventory
 public void moveChar(int charID, int roomID) - moves the character with ID charID to the room with ID roomID
 
-Class IOHandler
+class IOHandler
 
-Class GameMaster
+class MasterController - uses multithreading to get actions from controllers, then put them in a queue for the gm to execute
+Unsure of implementation as of now
+
+class GameMaster
 
 Attributes
+RoomList rooms - contains all the rooms in the game
+ItemList items - contains all the items in the game
+CharList characters - contains all the characters in the game
 
+Methods
+public String interpretCommand(Command c) - figures out what the given command is telling it to do and executes that thing
+public String getRoomDesc(int roomID) - returns the description of the room with ID roomID
+public String moveChar(int roomID, int charID, String dir) - if the character with ID charID is in the room with ID roomID and the room contains an exit in direction dir, moves the character to the room in that direction, then returns the description of the new room
+public String pickUpItem(int charID, int itemID) - if the character with ID charID is in the room that contains the item with ID itemID, removes the item from the room and adds it to the character's inventory
+public String dropItem(int charID, int itemID) - if the character with ID charID is holding the item with ID itemID, the character drops the item
+public String getInv(int charID) - returns a string containing the names of all the items in the inventory of the character with ID charID
 
-Class Command
+class Command
 
 Attributes
 [public static final int GET
@@ -166,17 +159,17 @@ public int getAction() - returns action
 public int getCharID() - returns charID
 public String getParam() - returns param
 
-Interface Controller
+interface Controller
 
 Methods
 public int getCharID() - returns the ID of the Character object this controller controls
 public Command takeAction() - decides what this controller's character should do, then returns a command object containing those instructions
 
-Class PlayerController implements Controller
+class PlayerController implements Controller
 
-Class MobController implements Controller
+class MobController implements Controller
 
-Class Exit
+class Exit
 
 Attributes
 [public static final String NORTH
