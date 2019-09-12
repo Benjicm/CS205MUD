@@ -105,7 +105,7 @@ int nextID - increments each time an ID is assigned, used to ensure all IDs are 
 
 Methods
 private int getCharIndex(int charID) - returns the index in chars at which the character with ID charID is located
-public int addChar(String n) - creates a character with name n and ID nextID, then increments nextID. Returns the ID of the new character
+public int addChar(String name) - creates a character with name n and ID nextID, then increments nextID. Returns the ID of the new character
 public String getCharName(int charID) - returns the name of the character with ID charID
 public ArrayList<Integer> findCharByName(String charName) - returns an ArrayList containing the IDs of each character with name charName
 public int getCharLocation(int charID) - returns the ID of the room in which the character with ID charID is located
