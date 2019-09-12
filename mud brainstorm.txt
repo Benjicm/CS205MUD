@@ -53,7 +53,7 @@ String name - name of the item
 int ID - ID of the item
 boolean carriable - item cannot be picked up if false
 boolean isBeingCarried - true if the item is being carried by a character, false if the item is in a room
-int container - ID of the character carrying this item or the room containing it
+int containerID - ID of the character carrying this item or the room containing it
 
 Methods
 public String getName() - returns the item's name
@@ -84,7 +84,7 @@ class Character
 Attributes
 String name - name of the character
 int ID - ID of the character
-int room - ID of the room this character is in
+int currentRoom - ID of the room this character is in
 ArrayList<Integer> inventory - contains the IDs for each item this character is holding
 
 Methods
