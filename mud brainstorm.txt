@@ -130,7 +130,7 @@ CharList characters - contains all the characters in the game
 Methods
 public String interpretCommand(Command c) - figures out what the given command is telling it to do and executes that thing
 public String getRoomDesc(int roomID) - returns the description of the room with ID roomID
-public String moveChar(int roomID, int charID, String dir) - if the character with ID charID is in the room with ID roomID and the room contains an exit in direction dir, moves the character to the room in that direction, then returns the description of the new room
+public String moveChar(int charID, String dir) - if the room containing the character with ID charID contains an exit in direction dir, moves character to the room in that direction
 public String pickUpItem(int charID, int itemID) - if the character with ID charID is in the room that contains the item with ID itemID, removes the item from the room and adds it to the character's inventory
 public String dropItem(int charID, int itemID) - if the character with ID charID is holding the item with ID itemID, the character drops the item
 public String getInv(int charID) - returns a string containing the names of all the items in the inventory of the character with ID charID
